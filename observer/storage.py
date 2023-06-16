@@ -9,7 +9,7 @@ from models import dtos
 
 class Storage(base.ObserverBase):
     def execute(self, data: dtos.ObserverDTO):
-        print(f'Storing data: {asdict(data.dto)}')
+        print(f'Storing data: {data.dto}')
         self.append_data_to_json(file_path=data.scraper.get_filename(), data=[asdict(data.dto)])
 
     @staticmethod

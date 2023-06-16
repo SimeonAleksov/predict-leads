@@ -3,6 +3,7 @@ from abc import ABC
 from abc import abstractmethod
 
 import requests
+from bs4 import BeautifulSoup
 
 from scrapers.constants import Scraper
 from observer import base
@@ -24,17 +25,25 @@ class BaseScrapeClient(ABC):
     def crawl(self) -> None:
         pass
 
-    def _request(self, url: str, method: str ) -> str:
+    @classmethod
+    def _request(cls, url: str, method: str ) -> str:
         response = requests.request(method=method, url=url)
-        logger.debug(f'[{self.log_prefix}] URL: {url}, Status code: {response.status_code}, Content: {response.content}')
+        logger.debug(f'[{cls.log_prefix}] URL: {url}, Status code: {response.status_code}, Content: {response.content}')
         if response.status_code != requests.codes.ok:
             raise Exception('Request not ok.')
 
         return response.text
 
+    def _parse_with_beautiful_soup(self, content: str) -> BeautifulSoup:
+        return BeautifulSoup(content, 'html.parser')
+
+    def find_article(self, content: str):
+        bs = self._parse_with_beautiful_soup(content=content)
+        return bs.find_all('article')
+
     def execute_scrape(self):
-        self.crawl()
-        self.notify(data=dtos.ObserverDTO(scraper=self.scraper, dto=dtos.CompanyDTO(**{'url': 'https:deel.com', 'name': 'Shigoto'})))
+        for data in self.crawl():
+            self.notify(data=dtos.ObserverDTO(scraper=self.scraper, dto=data))
 
     def attach(self, observer: base.ObserverBase):
         self.observers.append(observer)

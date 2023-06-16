@@ -14,6 +14,7 @@ class BaseDTO:
 class CompanyDTO(BaseDTO):
     name: str
     url: str
+    logo: str
 
 
 
