@@ -7,7 +7,7 @@ from scrapers.factory import ScraperFactory
 if __name__ == '__main__':
     setup_logging()
 
-    scraper = ScraperFactory.create_scraper(client=constants.Scraper.DEEL)
+    scraper = ScraperFactory.create_scraper(client=constants.Scraper.SCALE)
     storage = Storage()
     scraper.attach(observer=storage)
     scraper.execute_scrape()

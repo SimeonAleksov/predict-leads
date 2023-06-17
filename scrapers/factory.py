@@ -18,4 +18,6 @@ class ScraperFactory:
         try:
             return _mapping[client]
         except KeyError:
-            raise exceptions.FactoryClientNotFoundError(f'[CLIENT-FACTORY] Scraping client not found for {client}.')
+            raise exceptions.FactoryClientNotFoundError(
+                f'[CLIENT-FACTORY] Scraping client not found for {client}.'
+            )

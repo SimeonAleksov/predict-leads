@@ -1,3 +1,4 @@
+import logging
 import json
 import os
 
@@ -7,10 +8,16 @@ from observer import base
 from models import dtos
 
 
+logger = logging.getLogger(__name__)
+_LOG_PREFIX = 'STORAGE-OBSERVER'
+
+
 class Storage(base.ObserverBase):
     def execute(self, data: dtos.ObserverDTO):
-        print(f'Storing data: {data.dto}')
-        self.append_data_to_json(file_path=data.scraper.get_filename(), data=[asdict(data.dto)])
+        logger.info(f'[{_LOG_PREFIX}] Storing {data.dto}.')
+        self.append_data_to_json(
+            file_path=data.scraper.get_filename(), data=[asdict(data.dto)]
+        )
 
     @staticmethod
     def append_data_to_json(file_path, data):

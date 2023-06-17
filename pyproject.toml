@@ -1,0 +1,12 @@
+[tool.black]
+line-length = 80
+include = '\.pyi?$'
+preview = true
+skip-string-normalization = true
+experimental-string-processing = true
+extend-exclude = '''
+/(
+  | .git
+  | .env
+)/
+'''

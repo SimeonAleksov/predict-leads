@@ -17,7 +17,6 @@ class CompanyDTO(BaseDTO):
     logo: str
 
 
-
 @define
 class ObserverDTO(BaseDTO):
     scraper: constants.Scraper
