@@ -2,6 +2,8 @@ import logging
 
 from scrapers import base
 from scrapers import constants
+from scrapers import tags
+from scrapers.deel import constants as deel_constants
 
 from models import dtos
 
@@ -13,8 +15,8 @@ class DeelClient(base.BaseScrapeClient):
     scraper = constants.Scraper.DEEL
     log_prefix = 'DEEL-SCRAPE-CLIENT'
 
-    BASE_URL = 'https://www.deel.com'
-    SCRAPE_PATH = '/case-studies'
+    BASE_URL = deel_constants.BASE_URL
+    SCRAPE_PATH = deel_constants.SCRAPE_PATH
 
     def crawl(self):
         response = self._request(
@@ -23,12 +25,12 @@ class DeelClient(base.BaseScrapeClient):
         self.init_beautiful_soup(content=response)
 
         for article in self.find_articles():
-            header = article.find('h2')
-            url = article.find('a')
-            image = article.find('img')
+            header = article.find(tags.ElementTag.HEADING_2.value)
+            url = article.find(tags.ElementTag.A.value)
+            image = article.find(tags.ElementTag.IMG.value)
 
             yield dtos.CompanyDTO(
                 name=header.text.strip(),
-                url=url['href'].strip(),
-                logo=image['src'],
+                url=url[tags.ElementTagProperty.HREF.value].strip(),
+                logo=image[tags.ElementTagProperty.SRC.value],
             )

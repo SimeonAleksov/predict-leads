@@ -13,3 +13,7 @@ class Scraper(enum.IntEnum):
             self.WEBFLOW: 'webflow.json',
         }
         return _mapping[self]
+
+    @classmethod
+    def as_list(cls):
+        return [client.name for client in cls]

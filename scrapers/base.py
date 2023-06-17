@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 from bs4 import element
 
 from scrapers.constants import Scraper
+from scrapers.tags import ElementTag
 from observer import base
 from models import dtos
 
@@ -44,25 +45,28 @@ class BaseScrapeClient(ABC):
     def init_beautiful_soup(self, content: str):
         self.soup = BeautifulSoup(content, 'html.parser')
 
+    def find_divs_by_property(self, div_property: typing.Dict):
+        return self.soup.find_all(ElementTag.DIV.value, div_property)
+
     def find_article(
         self,
     ) -> typing.Union[element.Tag, element.NavigableString]:
-        return self.soup.find('article')
+        return self.soup.find(ElementTag.ARTICLE.value)
 
     def find_image(self) -> typing.Union[element.Tag, element.NavigableString]:
-        return self.soup.find('img')
+        return self.soup.find(ElementTag.IMG.value)
 
     def find_link(self) -> typing.Union[element.Tag, element.NavigableString]:
-        return self.soup.find('a')
+        return self.soup.find(ElementTag.A.value)
 
     def find_articles(self) -> element.ResultSet:
-        return self.soup.find_all('article')
+        return self.soup.find_all(ElementTag.ARTICLE.value)
 
     def find_images(self) -> element.ResultSet:
-        return self.soup.find_all('img')
+        return self.soup.find_all(ElementTag.IMG.value)
 
     def find_links(self) -> element.ResultSet:
-        return self.soup.find_all('a')
+        return self.soup.find_all(ElementTag.A.value)
 
     def execute_scrape(self):
         logger.info(
