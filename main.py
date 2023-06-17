@@ -14,7 +14,9 @@ def run_scrape(client: str):
 
 
 @click.command()
-@click.option('--client', type=click.Choice(constants.Scraper.as_list() + ['ALL']))
+@click.option(
+    '--client', type=click.Choice(constants.Scraper.as_list() + ['ALL'])
+)
 def run_scrapers(client: constants.Scraper):
     if client == 'ALL':
         for scraping_client in constants.Scraper:

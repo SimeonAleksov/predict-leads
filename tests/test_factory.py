@@ -14,7 +14,10 @@ class TestScraperFactory:
             (constants.Scraper.SCALE, does_not_raise()),
             (constants.Scraper.DEEL, does_not_raise()),
             (constants.Scraper.WEBFLOW, does_not_raise()),
-            ('random_non_existant_client', pytest.raises(exceptions.FactoryClientNotFoundError)),
+            (
+                'random_non_existant_client',
+                pytest.raises(exceptions.FactoryClientNotFoundError),
+            ),
         ],
     )
     def test_create_scraper(self, client, expectation):
